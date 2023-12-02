@@ -26,7 +26,6 @@
                     <th>Nom</th>
                     <th>Prenom</th>
                     <th>points</th>
-                    <th>select</th>
                 </tr>
                 {%for d in data%}
                 <tr>
@@ -36,7 +35,9 @@
                     <td>{{d[3]}}</td>
                     <td>
                         <!-- Ajout de la case à cocher à l'intérieur de chaque ligne -->
-                        <input type="checkbox" name="selectedRows" value="{{ d[0] }}">
+                        
+                            <input type="checkbox" name="selectedRows" value="{{d[0]}}">
+                       
                     </td>
                 </tr>
                 {% endfor %}
@@ -48,12 +49,31 @@
         </div>
         <div class="boutons" >
             
-            <input type="submit" value="supprimer" id="remove">
-            <input type="submit" value="modifier" id="modify">
+            <form action="/deleteRows" method="POST" id="deleteForm">
+                <input type="submit" value="supprimer" id="remove">
+            </form>
+            
         </div>
         
     </div>
 
-    <script src="{{url_for('static', filename='script.js')}}"></script>
+    <script src="{{url_for('static', filename='script.js')}}">
+        const table = document.getElementById("table");
+    const checkboxes = table.querySelectorAll('input[type="checkbox"]');
+    var check = false;
+    
+    for (let i = checkboxes.length - 1; i >= 0; i--) {
+        if (checkboxes[i].checked) {
+            table.deleteRow(i + 1); 
+            numero--; 
+            check = true;
+            // hna il faut modifier le num de la derniere ligne
+        }
+    }
+        if (!check) {
+        alert("Cochez au moins une case pour pouvoir la supprimer.");
+        }   
+         
+    </script>
 </body>
 </html>
