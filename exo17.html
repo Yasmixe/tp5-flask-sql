@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="infos">
+            <form action="/addPerson" method="POST">
+                <label for="name">Nom:</label>
+                <input type="text" name="name" id="name">
+                <label for="secondname">Prenom:</label>
+                <input type="text" name="secondname" id="secondname">
+                <label for="range">Point:</label>
+                <input type="text" name="range" id="range">
+                <input type="submit" value="Insérer">
+            </form>
+        </div>
+        <div class="tableau" >
+              <table id="table">
+                <tr>
+                    <th>Num</th>
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th>points</th>
+                    <th>select</th>
+                </tr>
+                {%for d in data%}
+                <tr>
+                    <td>{{d[0]}}</td>
+                    <td>{{d[1]}}</td>
+                    <td>{{d[2]}}</td>
+                    <td>{{d[3]}}</td>
+                    <td>
+                        <!-- Ajout de la case à cocher à l'intérieur de chaque ligne -->
+                        <input type="checkbox" name="selectedRows" value="{{ d[0] }}">
+                    </td>
+                </tr>
+                {% endfor %}
+              </table>
+        </div>
+        <div class="resume">
+            <p id="ligne">lignes</p>
+            <p id="total">total score</p>
+        </div>
+        <div class="boutons" >
+            
+            <input type="submit" value="supprimer" id="remove">
+            <input type="submit" value="modifier" id="modify">
+        </div>
+        
+    </div>
+
+    <script src="{{url_for('static', filename='script.js')}}"></script>
+</body>
+</html>

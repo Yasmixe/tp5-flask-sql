@@ -15,14 +15,33 @@ mysql.init_app(app)
 
 
 @app.route("/")
-def index():
+def form():
     conn = mysql.connect()
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM person")
     data = cursor.fetchall()
     cursor.close()
 
-    return render_template("exo16.html", data=data)
+    return render_template("exo17.html", data=data)
+
+
+@app.route("/addPerson", methods=["POST"])
+def index():
+    nom = request.form["name"]
+    prenom = request.form["secondname"]
+    rangee = request.form["range"]
+    conn = mysql.connect()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "INSERT INTO person ( nom, prenom, points) VALUES ( %s, %s, %s)",
+        (nom, prenom, rangee),
+    )
+    data = cursor.fetchall()
+    conn.commit()
+    cursor.close()
+
+    return redirect("/")
 
 
 if __name__ == "__main__":
