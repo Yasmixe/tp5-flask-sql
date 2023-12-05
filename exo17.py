@@ -45,25 +45,20 @@ def index():
 
 
 @app.route("/deleteRows", methods=["POST"])
-def delete_rows():
-    selected_rows = request.form.getlist("selectedRows")
-    if selected_rows:
+def supprimer_personnes():
+    selected_ids = request.form.getlist("selected_ids")
+
+    if selected_ids:
         conn = mysql.connect()
         cursor = conn.cursor()
 
-        # Create a placeholder for each selected row
-        placeholders = ",".join(["%s"] * len(selected_rows))
-
-        # Build the DELETE query using parameterized placeholders
-        delete_query = f"DELETE FROM person WHERE id IN ({placeholders})"
-
-        # Execute the query with the selected rows as parameters
-        cursor.execute(delete_query, selected_rows)
+        for person_id in selected_ids:
+            cursor.execute("DELETE FROM person WHERE id = %s", (person_id))
 
         conn.commit()
         cursor.close()
 
-        return redirect("/")
+    return redirect("/")
 
 
 if __name__ == "__main__":
